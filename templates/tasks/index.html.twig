@@ -1,0 +1,79 @@
+{% extends "./base.html.twig" %}
+
+{% block body %}
+    <div class="w-4/5 m-auto text-center">
+        <div class="py-12 border-b border-gray-200">
+            <h1 class="text-6xl pt-12 pb-8">
+                {{page}}
+            </h1>
+
+            <span class="font-light text-gray-500 italic">
+                 {{ tasks|length }} tasks available
+            </span>
+
+            <div class="mx-auto w-4/5 my-8">
+
+            {# <a 
+                href="/tasks/create" 
+                class="uppercase border border-gray-500 text-lg py-4 px-6 rounded transition transition-all bg-gray-800 text-white hover:bg-white hover:text-gray-800">
+                Create New Task
+            </a> #}
+
+        </div>
+        </div>
+    </div>
+    
+    <table class="w-4/5 table-auto mx-auto">
+    <thead>
+        <tr>
+            <th class="border px-4 py-2">Title</th>
+            <th class="border px-4 py-2">Created On</th>
+            <th class="border px-4 py-2">Due Date</th>
+            <th class="border px-4 py-2">Description</th>
+            <th class="border px-4 py-2">Status</th>
+            {% if app.user %}
+                <th class="border px-4 py-2">Assignee</th>
+                <th class="border px-4 py-2">Actions</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+            <tr class="bg-white">
+                <td class="border px-4 py-2">{{ task.title }}</td>
+                <td class="border px-4 py-2">{{ task.createdOn|date('Y-m-d') }}</td>
+                <td class="border px-4 py-2">{{ task.dueDate|date('Y-m-d') }}</td>
+                <td class="border px-4 py-2">{{ task.description }}</td>
+                <td class="border px-4 py-2">
+                {% if task.isDone == 0 %}
+                    Open
+                {% else %}
+                    Solved
+                {% endif %}
+                </td>
+
+                {% if app.user %}
+                <td class="border px-4 py-2">
+                     {% if task.user == null %}
+                    <a href="/tasks/assign/{{task.id}}/{{app.user.username}}" class="text-blue-500 hover:underline mr-2">Assign to me</a>
+                    {% else %}
+                    {{task.user}}
+                    {% endif %}
+                </td>
+
+                <td class="border px-4 py-2 text-center">
+                    {% if task.isDone == 0 %}
+                    <a href="/tasks/solve/{{ task.id }}" class="text-blue-500 hover:underline mr-2">Solve</a>
+                    {% else %}
+                    <a href="/tasks/open/{{ task.id }}" class="text-blue-500 hover:underline mr-2">Open</a>
+                    {% endif %}
+                    <a href="/tasks/edit/{{ task.id }}" class="text-blue-500 hover:underline">Edit</a>
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

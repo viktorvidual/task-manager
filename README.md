@@ -2,6 +2,8 @@
 
 A single page application where users can manage tasks.
 
+Original Repository: https://gitlab.com/viktor.mp/task-list-symfony-php
+
 ## Installation
 
 1. Clone the repository.
